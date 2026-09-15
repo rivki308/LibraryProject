@@ -38,6 +38,16 @@ public class LoanRepository : ILoanRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<List<Loan>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Loans
+            .AsNoTracking()
+            .Include(l => l.Book)
+            .Include(l => l.Member)
+            .OrderByDescending(l => l.LoanDate)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task AddAsync(Loan loan, CancellationToken cancellationToken)
     {
         await _context.Loans.AddAsync(loan, cancellationToken);

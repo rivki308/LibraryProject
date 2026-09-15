@@ -4,9 +4,10 @@ import { useAuth } from './AuthContext';
 import AuthPage from './pages/AuthPage';
 import BooksPage from './pages/BooksPage';
 import MyLoansPage from './pages/MyLoansPage';
+import AdminMembersPage from './pages/AdminMembersPage';
 
 function App() {
-  const { member, logout } = useAuth();
+  const { member, isAdmin, logout } = useAuth();
   const [view, setView] = useState('books');
 
   if (!member) {
@@ -24,6 +25,11 @@ function App() {
           <button className={view === 'loans' ? 'active' : ''} onClick={() => setView('loans')}>
             ההשאלות שלי
           </button>
+          {isAdmin && (
+            <button className={view === 'members' ? 'active' : ''} onClick={() => setView('members')}>
+              ניהול מנויים
+            </button>
+          )}
         </div>
         <div className="nav-user">
           <span>שלום, {member.name}</span>
@@ -32,7 +38,9 @@ function App() {
       </nav>
 
       <main className="content">
-        {view === 'books' ? <BooksPage /> : <MyLoansPage />}
+        {view === 'books' && <BooksPage />}
+        {view === 'loans' && <MyLoansPage />}
+        {view === 'members' && isAdmin && <AdminMembersPage />}
       </main>
     </div>
   );

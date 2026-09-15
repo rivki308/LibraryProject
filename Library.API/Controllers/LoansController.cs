@@ -43,6 +43,14 @@ public class LoansController : ControllerBase
         return Ok(loans);
     }
 
+    [HttpGet]
+    [Authorize(Policy = "AdminOnly")]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var loans = await _loanService.GetAllAsync(cancellationToken);
+        return Ok(loans);
+    }
+
     [HttpPut("{id:int}/return")]
     [ProducesResponseType(typeof(LoanResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]

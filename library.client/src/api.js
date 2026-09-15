@@ -51,4 +51,6 @@ export const api = {
   createLoan: (bookId) => request('/loans', { method: 'POST', body: JSON.stringify({ bookId }) }),
   getMyLoans: () => request('/loans/my-loans', { method: 'GET' }),
   returnLoan: (loanId) => request(`/loans/${loanId}/return`, { method: 'PUT' }),
+  getMembers: () => request('/members', { method: 'GET' }),
+  getAllLoans: () => request('/loans', { method: 'GET' }),
 };

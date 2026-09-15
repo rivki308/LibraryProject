@@ -60,6 +60,12 @@ public class LoanService : ILoanService
         return _mapper.Map<LoanResponse>(created);
     }
 
+    public async Task<List<LoanResponse>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        var loans = await _loanRepository.GetAllAsync(cancellationToken);
+        return _mapper.Map<List<LoanResponse>>(loans);
+    }
+
     public async Task<LoanResponse?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var loan = await _loanRepository.GetByIdWithDetailsAsync(id, cancellationToken);

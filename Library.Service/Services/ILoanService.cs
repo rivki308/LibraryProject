@@ -7,5 +7,6 @@ public interface ILoanService
     Task<LoanResponse> CreateAsync(int memberId, LoanCreateRequest request, CancellationToken cancellationToken);
     Task<LoanResponse?> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task<List<LoanResponse>> GetMyLoansAsync(int memberId, CancellationToken cancellationToken);
+    Task<List<LoanResponse>> GetAllAsync(CancellationToken cancellationToken);
     Task<LoanResponse> ReturnAsync(int loanId, int memberId, CancellationToken cancellationToken);
 }
