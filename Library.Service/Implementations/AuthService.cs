@@ -2,6 +2,7 @@ using AutoMapper;
 using Library.Core.DTOs.Members;
 using Library.Core.Entities;
 using Library.Core.Interfaces;
+using Library.Core.Security;
 using Library.Service.Security;
 using Library.Service.Services;
 
