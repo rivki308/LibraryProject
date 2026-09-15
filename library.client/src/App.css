@@ -1,0 +1,179 @@
+.app-shell {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar .brand {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-links button,
+.tabs button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.nav-links button.active,
+.tabs button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-user button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.content {
+  flex: 1;
+  padding: 24px 32px;
+  text-align: right;
+}
+
+.auth-page {
+  max-width: 380px;
+  margin: 80px auto;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.auth-page .tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.auth-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-page input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.auth-page button[type='submit'] {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.search-bar button {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+th,
+td {
+  text-align: right;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.error {
+  color: #d9363e;
+  background: rgba(217, 54, 62, 0.1);
+  border: 1px solid rgba(217, 54, 62, 0.4);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+.info {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
