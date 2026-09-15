@@ -1,6 +1,22 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 
 const AuthContext = createContext(null);
+const ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+
+function decodeRole(token) {
+  try {
+    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const json = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + c.charCodeAt(0).toString(16).padStart(2, '0'))
+        .join('')
+    );
+    return JSON.parse(json)[ROLE_CLAIM];
+  } catch {
+    return null;
+  }
+}
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -23,7 +39,9 @@ export function AuthProvider({ children }) {
     setMember(null);
   };
 
-  const value = useMemo(() => ({ token, member, login, logout }), [token, member]);
+  const isAdmin = useMemo(() => (token ? decodeRole(token) === 'Admin' : false), [token]);
+
+  const value = useMemo(() => ({ token, member, isAdmin, login, logout }), [token, member, isAdmin]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

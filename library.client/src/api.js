@@ -24,7 +24,14 @@ async function request(path, options = {}) {
   }
 
   if (!response.ok) {
-    const error = new Error(data?.message || 'אירעה שגיאה');
+    let message = data?.message;
+    if (!message && data?.errors) {
+      message = Object.values(data.errors).flat().join(' ');
+    }
+    if (!message) {
+      message = data?.title || 'אירעה שגיאה';
+    }
+    const error = new Error(message);
     error.status = response.status;
     error.data = data;
     throw error;
@@ -38,6 +45,9 @@ export const api = {
   login: (body) => request('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   getBooks: (query) => request(`/books?${query}`, { method: 'GET' }),
   getCategories: () => request('/categories', { method: 'GET' }),
+  createBook: (body) => request('/books', { method: 'POST', body: JSON.stringify(body) }),
+  updateBook: (id, body) => request(`/books/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteBook: (id) => request(`/books/${id}`, { method: 'DELETE' }),
   createLoan: (bookId) => request('/loans', { method: 'POST', body: JSON.stringify({ bookId }) }),
   getMyLoans: () => request('/loans/my-loans', { method: 'GET' }),
   returnLoan: (loanId) => request(`/loans/${loanId}/return`, { method: 'PUT' }),

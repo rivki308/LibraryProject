@@ -32,6 +32,7 @@ public class LoanRepository : ILoanRepository
         return await _context.Loans
             .AsNoTracking()
             .Include(l => l.Book)
+            .Include(l => l.Member)
             .Where(l => l.MemberId == memberId)
             .OrderByDescending(l => l.LoanDate)
             .ToListAsync(cancellationToken);

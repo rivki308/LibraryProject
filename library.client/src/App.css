@@ -127,6 +127,51 @@
   cursor: pointer;
 }
 
+.book-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.book-form .error {
+  flex-basis: 100%;
+  margin-bottom: 0;
+}
+
+.book-form input,
+.book-form select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.book-form input[type='number'] {
+  width: 110px;
+}
+
+.book-form button {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button.danger {
+  border-color: #d9363e;
+  color: #d9363e;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
