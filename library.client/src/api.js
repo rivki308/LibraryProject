@@ -45,6 +45,7 @@ export const api = {
   login: (body) => request('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   getBooks: (query) => request(`/books?${query}`, { method: 'GET' }),
   getCategories: () => request('/categories', { method: 'GET' }),
+  createCategory: (body) => request('/categories', { method: 'POST', body: JSON.stringify(body) }),
   createBook: (body) => request('/books', { method: 'POST', body: JSON.stringify(body) }),
   updateBook: (id, body) => request(`/books/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
   deleteBook: (id) => request(`/books/${id}`, { method: 'DELETE' }),

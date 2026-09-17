@@ -19,6 +19,10 @@ export default function BooksPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [formError, setFormError] = useState('');
 
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryError, setCategoryError] = useState('');
+
   const loadBooks = async (page, searchTerm) => {
     const query = new URLSearchParams({
       pageNumber: page,
@@ -85,6 +89,22 @@ export default function BooksPage() {
     }
   };
 
+  const handleCreateCategory = async (e) => {
+    e.preventDefault();
+    setCategoryError('');
+    try {
+      await api.createCategory({ name: categoryName });
+      setCategoryName('');
+      setShowCategoryForm(false);
+      const updated = await api.getCategories();
+      setCategories(updated);
+      setMessageType('success');
+      setMessage('הקטגוריה נוספה בהצלחה!');
+    } catch (err) {
+      setCategoryError(err.message);
+    }
+  };
+
   const handleFormChange = (field) => (e) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
   };
@@ -126,7 +146,26 @@ export default function BooksPage() {
             {showForm ? 'ביטול' : 'הוסף ספר +'}
           </button>
         )}
+        {isAdmin && (
+          <button type="button" onClick={() => setShowCategoryForm((s) => !s)}>
+            {showCategoryForm ? 'ביטול' : 'קטגוריה +'}
+          </button>
+        )}
       </form>
+
+      {isAdmin && showCategoryForm && (
+        <form onSubmit={handleCreateCategory} className="book-form">
+          {categoryError && <p className="error">{categoryError}</p>}
+          <input
+            type="text"
+            placeholder="שם קטגוריה"
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            required
+          />
+          <button type="submit">שמור קטגוריה</button>
+        </form>
+      )}
 
       {isAdmin && showForm && (
         <form onSubmit={handleCreateBook} className="book-form">
