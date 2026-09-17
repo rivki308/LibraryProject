@@ -24,6 +24,14 @@ async function request(path, options = {}) {
   }
 
   if (!response.ok) {
+    if (response.status === 401) {
+      const message = 'פג תוקף ההתחברות. יש להתחבר מחדש.';
+      window.dispatchEvent(new CustomEvent('auth:expired', { detail: { message } }));
+      const error = new Error(message);
+      error.status = response.status;
+      throw error;
+    }
+
     let message = data?.message;
     if (!message && data?.errors) {
       message = Object.values(data.errors).flat().join(' ');

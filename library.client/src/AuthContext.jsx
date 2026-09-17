@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 const AuthContext = createContext(null);
 const ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
@@ -24,12 +24,14 @@ export function AuthProvider({ children }) {
     const stored = localStorage.getItem('member');
     return stored ? JSON.parse(stored) : null;
   });
+  const [sessionMessage, setSessionMessage] = useState('');
 
   const login = (authResponse) => {
     localStorage.setItem('token', authResponse.token);
     localStorage.setItem('member', JSON.stringify(authResponse.member));
     setToken(authResponse.token);
     setMember(authResponse.member);
+    setSessionMessage('');
   };
 
   const logout = () => {
@@ -39,9 +41,21 @@ export function AuthProvider({ children }) {
     setMember(null);
   };
 
+  useEffect(() => {
+    const handleExpired = (e) => {
+      logout();
+      setSessionMessage(e.detail?.message || 'פג תוקף ההתחברות. יש להתחבר מחדש.');
+    };
+    window.addEventListener('auth:expired', handleExpired);
+    return () => window.removeEventListener('auth:expired', handleExpired);
+  }, []);
+
   const isAdmin = useMemo(() => (token ? decodeRole(token) === 'Admin' : false), [token]);
 
-  const value = useMemo(() => ({ token, member, isAdmin, login, logout }), [token, member, isAdmin]);
+  const value = useMemo(
+    () => ({ token, member, isAdmin, login, logout, sessionMessage }),
+    [token, member, isAdmin, sessionMessage]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

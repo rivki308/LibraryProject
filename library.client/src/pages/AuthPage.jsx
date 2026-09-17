@@ -9,7 +9,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
-  const { login } = useAuth();
+  const { login, sessionMessage } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,6 +46,7 @@ export default function AuthPage() {
         </button>
       </div>
 
+      {sessionMessage && <p className="error">{sessionMessage}</p>}
       {error && <p className="error">{error}</p>}
       {info && <p className="info">{info}</p>}
 
