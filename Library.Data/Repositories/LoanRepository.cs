@@ -48,6 +48,13 @@ public class LoanRepository : ILoanRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<bool> HasLoansAsync(int bookId, CancellationToken cancellationToken)
+    {
+        return await _context.Loans
+            .AsNoTracking()
+            .AnyAsync(l => l.BookId == bookId, cancellationToken);
+    }
+
     public async Task AddAsync(Loan loan, CancellationToken cancellationToken)
     {
         await _context.Loans.AddAsync(loan, cancellationToken);

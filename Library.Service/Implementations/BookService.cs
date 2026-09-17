@@ -11,12 +11,14 @@ public class BookService : IBookService
 {
     private readonly IBookRepository _bookRepository;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ILoanRepository _loanRepository;
     private readonly IMapper _mapper;
 
-    public BookService(IBookRepository bookRepository, ICategoryRepository categoryRepository, IMapper mapper)
+    public BookService(IBookRepository bookRepository, ICategoryRepository categoryRepository, ILoanRepository loanRepository, IMapper mapper)
     {
         _bookRepository = bookRepository;
         _categoryRepository = categoryRepository;
+        _loanRepository = loanRepository;
         _mapper = mapper;
     }
 
@@ -88,6 +90,11 @@ public class BookService : IBookService
         if (book is null)
         {
             return false;
+        }
+
+        if (await _loanRepository.HasLoansAsync(id, cancellationToken))
+        {
+            throw new InvalidOperationException("לא ניתן למחוק ספר שיש לו היסטוריית השאלות. ניתן להשאיר אותו במערכת גם אם אינו בשימוש כרגע.");
         }
 
         _bookRepository.Delete(book);
