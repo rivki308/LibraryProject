@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Web;
 using Library.API.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
@@ -33,8 +34,10 @@ try
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
         ?? throw new InvalidOperationException("DefaultConnection is not configured");
 
+    //builder.Services.AddDbContext<AppDbContext>(options =>
+    //    options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     // Repositories
     builder.Services.AddScoped<IBookRepository, BookRepository>();
