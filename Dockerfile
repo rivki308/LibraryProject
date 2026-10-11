@@ -1,6 +1,4 @@
 
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 # העתקת כל תיקיית הפרויקט והפתרון
