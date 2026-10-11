@@ -124,12 +124,26 @@ try
         });
     });
 
+    //var app = builder.Build();
+
+    //using (var scope = app.Services.CreateScope())
+    //{
+    //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    //    await DbSeeder.SeedAsync(dbContext);
+    //}
     var app = builder.Build();
 
-    using (var scope = app.Services.CreateScope())
+    try
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await DbSeeder.SeedAsync(dbContext);
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await DbSeeder.SeedAsync(dbContext);
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.Error(ex, "An error occurred while initializing the database.");
     }
 
     // Middleware pipeline order matters:
