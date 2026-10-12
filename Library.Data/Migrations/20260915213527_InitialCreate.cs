@@ -45,7 +45,7 @@ namespace Library.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
-                    PasswordHash = table.Column<string>(type: "varchar(max)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
