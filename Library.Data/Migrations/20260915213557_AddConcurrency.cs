@@ -13,8 +13,8 @@ namespace Library.Data.Migrations
             migrationBuilder.AddColumn<byte[]>(
                 name: "RowVersion",
                 table: "Books",
-                type: "rowversion",
-                rowVersion: true,
+                //type: "rowversion",
+                //rowVersion: true,
                 nullable: false,
                 defaultValue: new byte[0]);
         }

@@ -54,10 +54,10 @@ namespace Library.Data.Migrations
                     b.Property<int>("PublishYear")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate();
+                    //b.Property<byte[]>("RowVersion")
+                    //    .IsConcurrencyToken()
+                    //    .IsRequired()
+                    //    .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Title")
                         .IsRequired()

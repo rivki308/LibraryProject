@@ -17,6 +17,6 @@ public class Book
 
     public ICollection<Loan> Loans { get; set; } = new List<Loan>();
 
-    [Timestamp]
-    public byte[] RowVersion { get; set; } = default!;
+    //[Timestamp]
+    //public byte[] RowVersion { get; set; } = default!;
 }

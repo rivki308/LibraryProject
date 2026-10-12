@@ -31,8 +31,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .HasConversion<string>()
             .HasMaxLength(20);
 
-        builder.Property(b => b.RowVersion)
-            .IsRowVersion();
+        //builder.Property(b => b.RowVersion);
 
         builder.HasMany(b => b.Loans)
             .WithOne(l => l.Book)
