@@ -57,7 +57,7 @@ namespace Library.Data.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Title")
                         .IsRequired()
