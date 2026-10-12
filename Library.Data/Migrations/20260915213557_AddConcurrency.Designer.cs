@@ -60,8 +60,7 @@ namespace Library.Data.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Title")
                         .IsRequired()
