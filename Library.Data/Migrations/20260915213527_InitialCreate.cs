@@ -91,9 +91,9 @@ namespace Library.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookId = table.Column<int>(type: "int", nullable: false),
                     MemberId = table.Column<int>(type: "int", nullable: false),
-                    LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LoanDate = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "timestamp", nullable: true),
                     Status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
