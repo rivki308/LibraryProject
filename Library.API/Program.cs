@@ -131,8 +131,18 @@ try
     //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     //    await DbSeeder.SeedAsync(dbContext);
     //}
-    var app = builder.Build();
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowClient", policy =>
+        {
+            policy.WithOrigins("https://libraryproject-client.onrender.com")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    });
+    var app = builder.Build();
+    app.UseCors("AllowClient");
     try
     {
         using (var scope = app.Services.CreateScope())
