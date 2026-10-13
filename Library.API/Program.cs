@@ -14,7 +14,6 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Web;
 using Library.API.Middleware;
-using Microsoft.EntityFrameworkCore;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
@@ -34,10 +33,24 @@ try
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
         ?? throw new InvalidOperationException("DefaultConnection is not configured");
 
-    //builder.Services.AddDbContext<AppDbContext>(options =>
-    //    options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+    // Render provides a URL (postgresql://user:pass@host:port/db) - convert it to Npgsql format
+    if (connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://"))
+    {
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo.Split(':', 2);
+        connectionString = new Npgsql.NpgsqlConnectionStringBuilder
+        {
+            Host = uri.Host,
+            Port = uri.Port > 0 ? uri.Port : 5432,
+            Database = uri.AbsolutePath.TrimStart('/'),
+            Username = Uri.UnescapeDataString(userInfo[0]),
+            Password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : null,
+            SslMode = Npgsql.SslMode.Prefer
+        }.ConnectionString;
+    }
+
     builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        options.UseNpgsql(connectionString));
 
     // Repositories
     builder.Services.AddScoped<IBookRepository, BookRepository>();
@@ -59,12 +72,15 @@ try
     // Controllers
     builder.Services.AddControllers();
 
-    // CORS - allow the React client to call the API during development
+    // CORS - allow the React client (local dev + Render) to call the API
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("ReactClient", policy =>
         {
-            policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+            policy.WithOrigins(
+                    "http://localhost:5173",
+                    "http://localhost:3000",
+                    "https://libraryproject-client.onrender.com")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -124,25 +140,8 @@ try
         });
     });
 
-    //var app = builder.Build();
-
-    //using (var scope = app.Services.CreateScope())
-    //{
-    //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    //    await DbSeeder.SeedAsync(dbContext);
-    //}
-
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowClient", policy =>
-        {
-            policy.WithOrigins("https://libraryproject-client.onrender.com")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-    });
     var app = builder.Build();
-    app.UseCors("AllowClient");
+
     try
     {
         using (var scope = app.Services.CreateScope())
@@ -157,6 +156,7 @@ try
     }
 
     // Middleware pipeline order matters:
+    app.UseCors("ReactClient");
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseMiddleware<CorrelationIdMiddleware>();
 
@@ -167,8 +167,6 @@ try
     }
 
     app.UseHttpsRedirection();
-
-    app.UseCors("ReactClient");
 
     app.UseAuthentication();
     app.UseAuthorization();
